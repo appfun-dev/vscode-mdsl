@@ -1,0 +1,91 @@
+// MDSL sample — open the Command Palette and pick one of the
+// "MDSL ..." color themes to see the configurable keyword colors.
+// Reference: https://microservice-api-patterns.github.io/MDSL-Specification/
+
+API description SampleAPI version "1.0.0"
+    usage context PUBLIC_API for FRONTEND_INTEGRATION
+    overview "A small REST API demonstrating MDSL syntax highlighting"
+
+/* ------------------------------------------------------------------
+   Part A — data contracts (schemas)
+   ------------------------------------------------------------------ */
+
+data type QuoteRequest {
+    "name":D<string>,
+    "amount":D<int>,
+    "currency":MD<string>
+}
+
+data type QuoteResponse {
+    "quoteId":ID<string>,
+    "price":D<int>,
+    "tags":D<string>*,                 // zero or more
+    "note":D<string>?,                 // optional
+    "selfLink":L                       // link element
+}
+
+data type Status { "OK" | "PENDING" | "ERROR" }   // enumeration via choice
+data type AccessToken <<API_Key>>"token":D<string> // stereotype
+data type Opaque P                                 // abstract placeholder
+
+relation type SelfLink targets QuoteEndpoint
+    action getQuote
+
+/* ------------------------------------------------------------------
+   Part B — endpoint type (service contract)
+   ------------------------------------------------------------------ */
+
+endpoint type QuoteEndpoint
+    version "1.0.0"
+    serves as PROCESSING_RESOURCE role
+    exposes
+        operation createQuote
+            with responsibility STATE_CREATION_OPERATION
+            in REQUEST_REPLY conversation
+            expecting
+                headers "traceId":MD<string>
+                payload QuoteRequest
+            delivering
+                payload QuoteResponse
+                reporting
+                    error NotFound "detail":D<string>
+            protected by policy basicAuthentication "userPwd":{ "userId":ID<string>, "password":MD<string> }
+
+        operation getQuote
+            with responsibility RETRIEVAL_OPERATION
+            expecting payload "quoteId":ID<string>
+            delivering payload QuoteResponse
+
+/* ------------------------------------------------------------------
+   Part C — provider (with HTTP binding) and client
+   ------------------------------------------------------------------ */
+
+API provider QuoteProvider
+    offers QuoteEndpoint
+        at endpoint location "https://api.example.com"
+        via protocol HTTP
+            binding resource QuotesResource at "/quotes"
+                operation createQuote to POST
+                    element "name" realized as QUERY parameter
+                    accepts "application/json"
+                    replies "application/json"
+                operation getQuote to GET
+                    element "quoteId" realized as PATH parameter
+                    accepts "application/json"
+                    replies "application/json"
+
+API client QuoteClient
+    consumes QuoteEndpoint from QuoteProvider via protocol HTTP
+
+/* ------------------------------------------------------------------
+   Part D — service level agreement
+   ------------------------------------------------------------------ */
+
+SLA template GoldPlan
+    objective ResponseTime "P95 below 500 ms"
+        minimal 1000 target 500 optimal 200
+    penalty "service credits" notification "support@example.com"
+    rate plan USAGE_BASED
+    rate limit MAX_CALLS 1000 within 60 seconds
+
+IPA

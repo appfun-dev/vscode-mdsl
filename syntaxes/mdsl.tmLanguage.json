@@ -1,0 +1,292 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "MDSL",
+  "scopeName": "source.mdsl",
+  "fileTypes": ["mdsl"],
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#stereotype" },
+    { "include": "#strings" },
+    { "include": "#declarations" },
+    { "include": "#references" },
+    { "include": "#enums" },
+    { "include": "#element-roles" },
+    { "include": "#primitives" },
+    { "include": "#keywords" },
+    { "include": "#numbers" },
+    { "include": "#cardinality" },
+    { "include": "#operators" },
+    { "include": "#punctuation" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.block.mdsl",
+          "begin": "/\\*",
+          "end": "\\*/",
+          "beginCaptures": {
+            "0": { "name": "punctuation.definition.comment.begin.mdsl" }
+          },
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.comment.end.mdsl" }
+          }
+        },
+        {
+          "name": "comment.line.double-slash.mdsl",
+          "match": "//.*$",
+          "captures": {
+            "0": { "name": "comment.line.double-slash.mdsl" }
+          }
+        }
+      ]
+    },
+
+    "stereotype": {
+      "patterns": [
+        {
+          "match": "(<<)\\s*([^>]*?)\\s*(>>)",
+          "captures": {
+            "1": { "name": "punctuation.definition.stereotype.begin.mdsl" },
+            "2": { "name": "storage.type.stereotype.mdsl" },
+            "3": { "name": "punctuation.definition.stereotype.end.mdsl" }
+          }
+        }
+      ]
+    },
+
+    "strings": {
+      "patterns": [
+        {
+          "match": "(\"(?:[^\"\\\\]|\\\\.)*\")\\s*(:)(?:\\s*(?!(?:Metadata|Identifier|Data|Link|MD|ID|D|L|P|string|double|bool|long|void|int|raw)\\b)([A-Za-z_]\\w*))?",
+          "captures": {
+            "1": { "name": "variable.other.property.mdsl" },
+            "2": { "name": "punctuation.separator.dictionary.key-value.mdsl" },
+            "3": { "name": "entity.name.type.reference.mdsl" }
+          }
+        },
+        {
+          "name": "string.quoted.double.mdsl",
+          "match": "\"(?:[^\"\\\\]|\\\\.)*\""
+        }
+      ]
+    },
+
+    "declarations": {
+      "patterns": [
+        {
+          "match": "\\b(API)\\s+(description|provider|client)\\s+([A-Za-z_]\\w*)",
+          "captures": {
+            "1": { "name": "storage.type.mdsl" },
+            "2": { "name": "keyword.control.mdsl" },
+            "3": { "name": "entity.name.type.mdsl" }
+          }
+        },
+        {
+          "match": "\\b(data|endpoint|relation|event|command)\\s+(type)\\s+([A-Za-z_]\\w*)",
+          "captures": {
+            "1": { "name": "storage.type.mdsl" },
+            "2": { "name": "storage.type.mdsl" },
+            "3": { "name": "entity.name.type.mdsl" }
+          }
+        },
+        {
+          "match": "\\b(SLA)\\s+(template)\\s+([A-Za-z_]\\w*)",
+          "captures": {
+            "1": { "name": "storage.type.mdsl" },
+            "2": { "name": "storage.type.mdsl" },
+            "3": { "name": "entity.name.type.mdsl" }
+          }
+        },
+        {
+          "match": "\\b(operation)\\s+([A-Za-z_]\\w*)",
+          "captures": {
+            "1": { "name": "storage.type.mdsl" },
+            "2": { "name": "entity.name.function.mdsl" }
+          }
+        },
+        {
+          "match": "\\b(scenario|story|flow)\\s+([A-Za-z_]\\w*)",
+          "captures": {
+            "1": { "name": "storage.type.mdsl" },
+            "2": { "name": "entity.name.type.mdsl" }
+          }
+        },
+        {
+          "match": "\\b(event|command)\\s+([A-Za-z_]\\w*)",
+          "captures": {
+            "1": { "name": "storage.type.mdsl" },
+            "2": { "name": "entity.name.type.mdsl" }
+          }
+        }
+      ]
+    },
+
+    "references": {
+      "patterns": [
+        {
+          "match": "\\b(payload)\\s+(?!(?:Metadata|Identifier|Data|Link|MD|ID|D|L|P|string|double|bool|long|void|int|raw)\\b)([A-Za-z_]\\w*)",
+          "captures": {
+            "1": { "name": "keyword.other.mdsl" },
+            "2": { "name": "entity.name.type.reference.mdsl" }
+          }
+        },
+        {
+          "match": "\\b(resource)\\s+([A-Za-z_]\\w*)",
+          "captures": {
+            "1": { "name": "keyword.other.mdsl" },
+            "2": { "name": "entity.name.type.reference.mdsl" }
+          }
+        },
+        {
+          "match": "\\b(offers|consumes|targets|realizes|action)\\s+([A-Za-z_]\\w*)",
+          "captures": {
+            "1": { "name": "keyword.control.mdsl" },
+            "2": { "name": "entity.name.type.reference.mdsl" }
+          }
+        },
+        {
+          "match": "\\b(status|objective|error)\\s+([A-Za-z_]\\w*)",
+          "captures": {
+            "1": { "name": "keyword.other.mdsl" },
+            "2": { "name": "entity.name.type.mdsl" }
+          }
+        },
+        {
+          "match": "\\b(policy)\\s+([A-Za-z_]\\w*)",
+          "captures": {
+            "1": { "name": "keyword.control.mdsl" },
+            "2": { "name": "entity.name.type.reference.mdsl" }
+          }
+        },
+        {
+          "match": "\\b(compensated)\\s+(by)\\s+([A-Za-z_]\\w*)",
+          "captures": {
+            "1": { "name": "keyword.control.mdsl" },
+            "2": { "name": "keyword.control.mdsl" },
+            "3": { "name": "entity.name.type.reference.mdsl" }
+          }
+        },
+        {
+          "match": "\\b(from)\\s+([A-Za-z_]\\w*)",
+          "captures": {
+            "1": { "name": "keyword.control.mdsl" },
+            "2": { "name": "entity.name.type.reference.mdsl" }
+          }
+        }
+      ]
+    },
+
+    "enums": {
+      "patterns": [
+        {
+          "name": "support.constant.role.mdsl",
+          "match": "\\b(MUTABLE_COLLECTION_RESOURCE|STATELESS_PROCESSING_RESOURCE|STATEFUL_PROCESSING_RESOURCE|INFORMATION_HOLDER_RESOURCE|OPERATIONAL_DATA_HOLDER|REFERENCE_DATA_HOLDER|MASTER_DATA_HOLDER|DATA_TRANSFER_RESOURCE|LINK_LOOKUP_RESOURCE|TRANSFORMATION_RESOURCE|VALIDATION_RESOURCE|COLLECTION_RESOURCE|PROCESSING_RESOURCE)\\b"
+        },
+        {
+          "name": "support.constant.responsibility.mdsl",
+          "match": "\\b(BUSINESS_ACTIVITY_PROCESSOR|STATE_REPLACEMENT_OPERATION|STATE_TRANSITION_OPERATION|STATE_CREATION_OPERATION|STATE_DELETION_OPERATION|COMPUTATION_FUNCTION|RETRIEVAL_OPERATION|EVENT_PROCESSOR|REQUEST_REPLY|NOTIFICATION|ONE_WAY)\\b"
+        },
+        {
+          "name": "constant.language.http-method.mdsl",
+          "match": "\\b(GET|PUT|POST|PATCH|DELETE|HEAD|OPTIONS|TRACE)\\b"
+        },
+        {
+          "name": "constant.language.parameter-location.mdsl",
+          "match": "\\b(QUERY|HEADER|PATH|COOKIE|BODY)\\b"
+        },
+        {
+          "name": "constant.language.protocol.mdsl",
+          "match": "\\b(SOAP_HTTP|JSON-RPC|Avro_RPC|JMS_ActiveMQ|Web_Sockets|gRPC|HTTP|Thrift|Kafka|MQTT|STOMP|AMQP|Java)\\b"
+        },
+        {
+          "name": "constant.language.security.mdsl",
+          "match": "\\b(BASIC_AUTHENTICATION|OAUTH_IMPLICIT|OAUTH_FLOW|API_KEY|JWT)\\b"
+        },
+        {
+          "name": "constant.language.enumeration.mdsl",
+          "match": "\\b(SOLUTION_INTERNAL_API|LIMITED_GUARANTEED_LIFETIME|AGGRESSIVE_OBSOLESCENCE|FRONTEND_INTEGRATION|BACKEND_INTEGRATION|EXPERIMENTAL_PREVIEW|COMMUNITY_API|TWO_IN_PRODUCTION|ETERNAL_LIFETIME|OTHER_STRATEGY|PUBLIC_API|SUBSCRIPTION|USAGE_BASED|FREEMIUM|MAX_CALLS|DATA_QUOTA|UNDISCLOSED|NONE)\\b"
+        }
+      ]
+    },
+
+    "element-roles": {
+      "patterns": [
+        {
+          "name": "storage.type.element-role.mdsl",
+          "match": "\\b(Metadata|Identifier|Data|Link|MD|ID|D|L|P)\\b"
+        }
+      ]
+    },
+
+    "primitives": {
+      "patterns": [
+        {
+          "name": "support.type.primitive.mdsl",
+          "match": "\\b(string|double|bool|long|void|int|raw)\\b"
+        }
+      ]
+    },
+
+    "keywords": {
+      "patterns": [
+        {
+          "name": "storage.type.mdsl",
+          "match": "\\b(API|data|type|endpoint|relation|operation|provider|client|SLA|template|scenario|story|flow|event|command)\\b"
+        },
+        {
+          "name": "keyword.control.mdsl",
+          "match": "\\b(serves|as|role|exposes|with|responsibility|expecting|delivering|reporting|protected|by|policy|offers|via|protocol|binding|to|realized|consumes|from|targets|action|usage|context|for|at|within|realizes|triggers|emits|transitions|compensated|wants|yielding|when|accepts|replies|under|conditions|governance|default|is|description|overview|and|or|in|a|so|that)\\b"
+        },
+        {
+          "name": "keyword.other.mdsl",
+          "match": "\\b(version|media|input|any|external|resource|conversation|headers|payload|structured|status|error|analytics|static|dynamic|element|elements|parameter|parameters|details|all|report|location|minimal|target|optimal|rate|plan|limit|penalty|notification|objective|IPA|package)\\b"
+        }
+      ]
+    },
+
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.mdsl",
+          "match": "\\b\\d+(?:\\.\\d+)*\\b"
+        }
+      ]
+    },
+
+    "cardinality": {
+      "patterns": [
+        {
+          "name": "keyword.operator.quantifier.mdsl",
+          "match": "[?*+!]"
+        }
+      ]
+    },
+
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.choice.mdsl",
+          "match": "\\|"
+        }
+      ]
+    },
+
+    "punctuation": {
+      "patterns": [
+        { "name": "punctuation.section.braces.begin.mdsl", "match": "\\{" },
+        { "name": "punctuation.section.braces.end.mdsl", "match": "\\}" },
+        { "name": "punctuation.section.brackets.begin.mdsl", "match": "\\[" },
+        { "name": "punctuation.section.brackets.end.mdsl", "match": "\\]" },
+        { "name": "punctuation.section.parens.begin.mdsl", "match": "\\(" },
+        { "name": "punctuation.section.parens.end.mdsl", "match": "\\)" },
+        { "name": "punctuation.separator.comma.mdsl", "match": "," },
+        { "name": "punctuation.separator.semicolon.mdsl", "match": ";" },
+        { "name": "punctuation.bracket.angle.begin.mdsl", "match": "<<" },
+        { "name": "punctuation.bracket.angle.end.mdsl", "match": ">>" },
+        { "name": "punctuation.bracket.angle.begin.mdsl", "match": "<" },
+        { "name": "punctuation.bracket.angle.end.mdsl", "match": ">" }
+      ]
+    }
+  }
+}

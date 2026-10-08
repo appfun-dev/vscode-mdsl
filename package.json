@@ -1,0 +1,94 @@
+{
+  "name": "mdsl-syntax",
+  "displayName": "MDSL Syntax & Themes",
+  "description": "Standalone syntax highlighting for MDSL (Microservice Domain-Specific Language) with configurable keyword colors shipped as a set of independent theme styles.",
+  "version": "0.2.0",
+  "publisher": "appfun-dev",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Themes"
+  ],
+  "keywords": [
+    "mdsl",
+    "microservice",
+    "api",
+    "dsl",
+    "syntax",
+    "theme",
+    "highlighting",
+    "microservice-api-patterns"
+  ],
+  "icon": "images/icon.png",
+  "contributes": {
+    "languages": [
+      {
+        "id": "mdsl",
+        "aliases": [
+          "MDSL",
+          "mdsl",
+          "Microservice DSL"
+        ],
+        "extensions": [
+          ".mdsl"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "mdsl",
+        "scopeName": "source.mdsl",
+        "path": "./syntaxes/mdsl.tmLanguage.json"
+      }
+    ],
+    "themes": [
+      {
+        "label": "MDSL Dark (Default)",
+        "uiTheme": "vs-dark",
+        "path": "./themes/mdsl-dark.json"
+      },
+      {
+        "label": "MDSL Light (Default)",
+        "uiTheme": "vs",
+        "path": "./themes/mdsl-light.json"
+      },
+      {
+        "label": "MDSL Ocean",
+        "uiTheme": "vs-dark",
+        "path": "./themes/mdsl-ocean.json"
+      },
+      {
+        "label": "MDSL Monokai",
+        "uiTheme": "vs-dark",
+        "path": "./themes/mdsl-monokai.json"
+      },
+      {
+        "label": "MDSL Solarized Dark",
+        "uiTheme": "vs-dark",
+        "path": "./themes/mdsl-solarized.json"
+      },
+      {
+        "label": "MDSL High Contrast",
+        "uiTheme": "hc-black",
+        "path": "./themes/mdsl-high-contrast.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "mdsl",
+        "path": "./snippets/mdsl.json"
+      }
+    ],
+    "configurationDefaults": {
+      "[mdsl]": {
+        "editor.tabSize": 2,
+        "editor.wordWrap": "on",
+        "editor.suggest.showKeywords": true
+      }
+    }
+  }
+}

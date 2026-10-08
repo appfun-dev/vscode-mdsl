@@ -1,0 +1,103 @@
+{
+  "API description": {
+    "prefix": "API",
+    "body": [
+      "API description ${1:MyApi} version \"${2:1.0.0}\"",
+      "\tusage context ${3|PUBLIC_API,COMMUNITY_API,SOLUTION_INTERNAL_API|} for ${4|FRONTEND_INTEGRATION,BACKEND_INTEGRATION|}",
+      "\toverview \"${5:API overview}\"",
+      "$0"
+    ],
+    "description": "API specification header"
+  },
+  "data type": {
+    "prefix": "datatype",
+    "body": [
+      "data type ${1:Name} {",
+      "\t\"${2:field}\":${3|D,MD,ID,L|}<${4|string,int,long,double,boolean|}>$0",
+      "}"
+    ],
+    "description": "Data contract (payload representation)"
+  },
+  "enumeration type": {
+    "prefix": "enum",
+    "body": [
+      "data type ${1:Status} { \"${2:OK}\" | \"${3:PENDING}\" | \"${4:ERROR}\" }$0"
+    ],
+    "description": "Enumeration via choice operator"
+  },
+  "relation type": {
+    "prefix": "relationtype",
+    "body": [
+      "relation type ${1:SelfLink} targets ${2:TargetEndpoint}",
+      "\taction ${3:operationName}$0"
+    ],
+    "description": "Link (HATEOAS) contract"
+  },
+  "endpoint type": {
+    "prefix": "endpointtype",
+    "body": [
+      "endpoint type ${1:Name}",
+      "\tserves as ${2|PROCESSING_RESOURCE,INFORMATION_HOLDER_RESOURCE,MASTER_DATA_HOLDER,REFERENCE_DATA_HOLDER,OPERATIONAL_DATA_HOLDER,DATA_TRANSFER_RESOURCE,STATEFUL_PROCESSING_RESOURCE,STATELESS_PROCESSING_RESOURCE,COMPUTATION_FUNCTION,VALIDATION_RESOURCE,TRANSFORMATION_RESOURCE,COLLECTION_RESOURCE,MUTABLE_COLLECTION_RESOURCE|} role",
+      "\texposes",
+      "\t\toperation ${3:operationName}$0"
+    ],
+    "description": "Endpoint type (service contract)"
+  },
+  "operation": {
+    "prefix": "operation",
+    "body": [
+      "operation ${1:name}",
+      "\twith responsibility ${2|RETRIEVAL_OPERATION,STATE_CREATION_OPERATION,STATE_TRANSITION_OPERATION,STATE_REPLACEMENT_OPERATION,STATE_DELETION_OPERATION,COMPUTATION_FUNCTION,EVENT_PROCESSOR,BUSINESS_ACTIVITY_PROCESSOR|}",
+      "\tin ${3|REQUEST_REPLY,ONE_WAY,NOTIFICATION|} conversation",
+      "\texpecting",
+      "\t\tpayload ${4:RequestType}",
+      "\tdelivering",
+      "\t\tpayload ${5:ResponseType}$0"
+    ],
+    "description": "Operation with responsibility and message exchange pattern"
+  },
+  "API provider": {
+    "prefix": "provider",
+    "body": [
+      "API provider ${1:Name}",
+      "\toffers ${2:EndpointType}",
+      "\t\tat endpoint location \"${3:https://api.example.com}\"",
+      "\t\tvia protocol ${4|HTTP,gRPC,SOAP_HTTP,JSON-RPC,Kafka,AMQP,Web_Sockets,MQTT|}$0"
+    ],
+    "description": "API provider with deployment location and protocol"
+  },
+  "HTTP binding": {
+    "prefix": "httpbinding",
+    "body": [
+      "binding resource ${1:Resource} at \"${2:/path}\"",
+      "\toperation ${3:operationName} to ${4|GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS|}",
+      "\t\tmedia type \"${5:application/json}\"$0"
+    ],
+    "description": "HTTP resource/operation binding"
+  },
+  "API client": {
+    "prefix": "client",
+    "body": [
+      "API client ${1:Name}",
+      "\tconsumes ${2:EndpointType} from ${3:ProviderName} via protocol ${4|HTTP,gRPC,SOAP_HTTP,JSON-RPC,Kafka,AMQP,Web_Sockets,MQTT|}$0"
+    ],
+    "description": "API client consuming an offered endpoint"
+  },
+  "SLA template": {
+    "prefix": "sla",
+    "body": [
+      "SLA template ${1:Name}",
+      "\tobjective ${2:ResponseTime} \"${3:description}\"",
+      "\t\tminimal ${4:1000} target ${5:500} optimal ${6:200}",
+      "\trate plan ${7|USAGE_BASED,FREEMIUM,SUBSCRIPTION,NONE|}$0"
+    ],
+    "description": "Service level agreement template"
+  },
+  "security policy": {
+    "prefix": "protectedby",
+    "body": [
+      "protected by policy ${1:policyName} \"${2:parameter}\"$0"
+    ],
+    "description": "Operation security policy"
+  }
+}
